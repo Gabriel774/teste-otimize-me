@@ -1,0 +1,9 @@
+@font-face {
+  font-family: "Inter";
+  src: url("./inter/Inter-VariableFont.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Segoe UI";
+  src: url("./segoe-ui/Segoe\ UI.ttf") format("truetype");
+}
