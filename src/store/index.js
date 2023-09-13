@@ -12,10 +12,15 @@ const store = new Vuex.Store({
     productModule,
     userModule,
   },
+  mutations: {
+    setInitiatedCheckout(state, payload) {
+      state.initiatedCheckout = payload;
+    },
+  },
   actions: {
     initiateCheckout(context) {
       if (context.state.initiatedCheckout) return;
-      context.state.initiatedCheckout = true;
+      context.commit("setInitiatedCheckout", true);
       console.log("InitiatedCheckout");
     },
 
