@@ -13,13 +13,13 @@
 
       <el-col class="column" :span="16">
         <el-select v-model="country" placeholder="Alterar país">
+          <el-option label="Alterar país" :value="null" :disabled="true" />
           <el-option
             v-for="country in countries"
             :key="country.value"
             :label="country.label"
             :value="country.value"
-          >
-          </el-option>
+          />
         </el-select>
       </el-col>
     </el-row>
