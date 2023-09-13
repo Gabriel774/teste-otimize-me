@@ -1,14 +1,15 @@
 <template>
-  <div id="user-data-form">
+  <section id="user-data-form">
     <el-row id="main-content">
       <el-row class="row" type="flex">
         <el-col>
           <TextInput
+            @focus="initiateCheckout()"
             :id="'name'"
             :label="'Nome completo'"
-            :value="form.name"
+            :value="this.$store.state.userModule.name"
             :placeholder="'Digite seu nome completo'"
-            @changeValue="updateValue($event)"
+            @changeValue="[updateValue($event), addToCart()]"
           />
         </el-col>
       </el-row>
@@ -16,11 +17,12 @@
       <el-row class="row">
         <el-col>
           <TextInput
+            @focus="initiateCheckout()"
             :id="'email'"
             :label="'E-mail'"
-            :value="form.email"
+            :value="this.$store.state.userModule.email"
             :placeholder="'Digite seu e-mail'"
-            @changeValue="updateValue($event)"
+            @changeValue="[updateValue($event), addToCart()]"
           />
         </el-col>
       </el-row>
@@ -28,21 +30,25 @@
       <el-row class="row" :gutter="30" type="flex">
         <el-col class="col-expand" :span="12">
           <TextInput
+            @focus="initiateCheckout()"
             :id="'phone'"
             :label="'Telefone'"
-            :value="form.phone | phoneMask"
+            :value="this.$store.state.userModule.phone"
+            :mask="maskPhone"
             :placeholder="'(00) x0000-0000'"
-            @changeValue="updateValue($event)"
+            @changeValue="[updateValue($event), addToCart()]"
           />
         </el-col>
 
         <el-col class="col-expand" :span="12">
           <TextInput
+            @focus="initiateCheckout()"
             :id="'zipCode'"
             :label="'CEP'"
-            :value="form.zipCode | zipCodeMask"
+            :value="this.$store.state.userModule.zipCode | zipCodeMask"
             :placeholder="'Digite seu CEP'"
-            @changeValue="updateValue($event)"
+            :mask="maskZipCode"
+            @changeValue="[updateValue($event), fillAddress()]"
             @blur="getAddressData()"
           />
         </el-col>
@@ -51,9 +57,10 @@
       <el-row class="row">
         <el-col>
           <TextInput
+            @focus="initiateCheckout()"
             :id="'address'"
             :label="'Endereço'"
-            :value="form.address"
+            :value="this.$store.state.userModule.address"
             :placeholder="'Digite seu endereço'"
             :disabled="isFieldDisabled('address')"
             @changeValue="updateValue($event)"
@@ -64,23 +71,26 @@
       <el-row class="row" :gutter="30" type="flex">
         <el-col class="col-expand" :span="12">
           <TextInput
+            @focus="initiateCheckout()"
             :id="'addressNumber'"
             :label="'Número'"
-            :value="form.addressNumber | numberMask"
+            :value="this.$store.state.userModule.addressNumber | numberMask"
             :placeholder="'Número'"
             :showCheckbox="true"
             :disabled="numberDisabled"
+            :mask="maskNumber"
             :checkboxLabel="'Sem número'"
             @checkboxChange="updateCheckbox($event)"
-            @changeValue="updateValue($event)"
+            @changeValue="[updateValue($event), fillAddress()]"
           />
         </el-col>
 
         <el-col class="col-expand" :span="12">
           <TextInput
+            @focus="initiateCheckout()"
             :id="'addressComplement'"
             :label="'Complemento'"
-            :value="form.addressComplement"
+            :value="this.$store.state.userModule.addressComplement"
             :placeholder="'Digite seu complemento'"
             @changeValue="updateValue($event)"
           />
@@ -90,9 +100,10 @@
       <el-row class="row">
         <el-col>
           <TextInput
+            @focus="initiateCheckout()"
             :id="'district'"
             :label="'Bairro'"
-            :value="form.district"
+            :value="this.$store.state.userModule.district"
             :disabled="isFieldDisabled('district')"
             :placeholder="'Digite seu bairro'"
             @changeValue="updateValue($event)"
@@ -103,9 +114,10 @@
       <el-row class="row" :gutter="30" type="flex">
         <el-col class="col-expand" :span="12">
           <TextInput
+            @focus="initiateCheckout()"
             :id="'city'"
             :label="'Cidade'"
-            :value="form.city"
+            :value="this.$store.state.userModule.city"
             :placeholder="'Digite sua cidade'"
             :disabled="isFieldDisabled('city')"
             @changeValue="updateValue($event)"
@@ -116,7 +128,7 @@
           <SelectInput
             :id="'state'"
             :label="'Estado'"
-            :value="form.state"
+            :value="this.$store.state.userModule.state"
             :placeholder="'Selecione o seu estado'"
             :options="states"
             :disabled="isFieldDisabled('state')"
@@ -125,13 +137,12 @@
         </el-col>
       </el-row>
     </el-row>
-  </div>
+  </section>
 </template>
 
 <script>
 import { TextInput } from "@/components/molecules";
 import { SelectInput } from "@/components/molecules";
-import form from "./form";
 import { numberMask, phoneMask, zipCodeMask } from "../../../utils/filters";
 import states from "./states";
 import ViaCepService from "../../../services/ViaCepService";
@@ -141,7 +152,6 @@ export default {
   props: [],
   data: () => {
     return {
-      form,
       states,
       disabledFields: [],
       numberDisabled: false,
@@ -150,29 +160,44 @@ export default {
   components: { TextInput, SelectInput },
   methods: {
     updateValue(event) {
-      this.form[event.key] = event.value;
+      this.$store.commit("updateValue", { ...event });
     },
 
     async getAddressData() {
       this.disabledFields = [];
+      if (this.$store.state.userModule.zipCode.length < 9) return;
 
       const service = new ViaCepService();
-      const data = await service.getAddressData(this.form.zipCode);
+      const data = await service.getAddressData(
+        this.$store.state.userModule.zipCode
+      );
 
       if (data.logradouro) {
-        this.form.address = data.logradouro;
+        this.$store.commit("updateValue", {
+          key: "address",
+          value: data.logradouro,
+        });
         this.disabledFields = [...this.disabledFields, "address"];
       }
       if (data.bairro) {
-        this.form.district = data.bairro;
+        this.$store.commit("updateValue", {
+          key: "district",
+          value: data.bairro,
+        });
         this.disabledFields = [...this.disabledFields, "district"];
       }
       if (data.localidade) {
-        this.form.city = data.localidade;
+        this.$store.commit("updateValue", {
+          key: "city",
+          value: data.localidade,
+        });
         this.disabledFields = [...this.disabledFields, "city"];
       }
       if (data.uf) {
-        this.form.state = data.uf;
+        this.$store.commit("updateValue", {
+          key: "state",
+          value: data.uf,
+        });
         this.disabledFields = [...this.disabledFields, "state"];
       }
     },
@@ -182,8 +207,26 @@ export default {
     },
 
     updateCheckbox(value) {
-      this.form.addressNumber = "";
+      this.$store.commit("updateValue", { key: "addressNumber", value: "" });
       this.numberDisabled = value;
+    },
+    maskPhone(value) {
+      return phoneMask(value);
+    },
+    maskZipCode(value) {
+      return zipCodeMask(value);
+    },
+    maskNumber(value) {
+      return numberMask(value);
+    },
+    initiateCheckout() {
+      this.$store.dispatch("initiateCheckout");
+    },
+    addToCart() {
+      this.$store.dispatch("addToCart");
+    },
+    fillAddress() {
+      this.$store.dispatch("fillAddress");
     },
   },
   filters: {

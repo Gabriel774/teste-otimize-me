@@ -10,17 +10,13 @@
         <p id="price">R$ {{ price }} / Mês</p>
         <p id="description">{{ description }}</p>
       </el-col>
-
       <el-col class="column" :span="16">
-        <el-select v-model="country" placeholder="Alterar país">
-          <el-option label="Alterar país" :value="null" :disabled="true" />
-          <el-option
-            v-for="country in countries"
-            :key="country.value"
-            :label="country.label"
-            :value="country.value"
-          />
-        </el-select>
+        <SelectInput
+          :value="country"
+          :placeholder="'Alterar país'"
+          :options="countries"
+          @changeValue="updateCountry($event)"
+        />
       </el-col>
     </el-row>
 
@@ -31,16 +27,23 @@
 </template>
 
 <script>
+import SelectInput from "../../molecules/SelectInput/index.vue";
 import countries from "./countries";
 
 export default {
   name: "ProductInfo",
   props: ["name", "price", "description"],
+  components: { SelectInput },
   data: () => {
     return {
       country: "",
       countries,
     };
+  },
+  methods: {
+    updateCountry(item) {
+      this.country = item.value;
+    },
   },
 };
 </script>

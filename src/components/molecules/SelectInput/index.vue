@@ -6,14 +6,15 @@
       :name="id"
       :placeholder="placeholder"
       :value="value"
+      :class="`${marginTop && 'top-spacing'}`"
       :disabled="disabled"
       @change="$emit('changeValue', { value: $event, key: id })"
     >
       <el-option
         v-for="option in options"
-        :key="option.value"
-        :label="option.label"
-        :value="option.value"
+        :key="option.value ? option.value : option"
+        :label="option.label ? option.label : option"
+        :value="option.value ? option.value : option"
       />
     </el-select>
   </div>
@@ -29,6 +30,7 @@ export default {
     id: String,
     options: Array,
     disabled: Boolean,
+    marginTop: Boolean,
   },
 };
 </script>
@@ -44,5 +46,9 @@ export default {
   flex-direction: column;
   gap: 4px;
   position: relative;
+}
+
+.top-spacing {
+  margin-top: 18px;
 }
 </style>

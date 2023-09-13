@@ -19,16 +19,19 @@ export default {
 
 body {
   background-color: #f6f6f6;
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 #app {
   font-family: "Inter";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
   color: #2c3e50;
 }
 </style>

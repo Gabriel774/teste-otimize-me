@@ -8,8 +8,10 @@
       :placeholder="placeholder"
       :value="value"
       :disabled="disabled"
+      :class="`${marginTop && 'top-spacing'}`"
       @blur="$emit('blur')"
-      @input="$emit('changeValue', { value: $event, key: id })"
+      @focus="$emit('focus')"
+      @input="$emit('changeValue', { value: maskValue($event), key: id })"
     />
 
     <el-checkbox
@@ -33,6 +35,14 @@ export default {
     disabled: Boolean,
     showCheckbox: Boolean,
     checkboxLabel: String,
+    marginTop: Boolean,
+    mask: Function,
+  },
+  methods: {
+    maskValue(value) {
+      if (this.mask) return this.mask(value);
+      return value;
+    },
   },
 };
 </script>
@@ -59,5 +69,9 @@ export default {
   flex-direction: column;
   gap: 4px;
   position: relative;
+}
+
+.top-spacing {
+  margin-top: 18px;
 }
 </style>

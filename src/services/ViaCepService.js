@@ -4,12 +4,9 @@ class ViaCepService {
   }
 
   async getAddressData(zipCode) {
-    this.disabledFields = [];
     try {
       const res = await fetch(`${this.baseUrl}/ws/${zipCode}/json/`);
-      const data = await res.json();
-
-      return data;
+      return await res.json();
     } catch {
       return console.log("CEP não encontrado");
     }

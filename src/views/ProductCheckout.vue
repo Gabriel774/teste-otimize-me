@@ -1,29 +1,34 @@
 <template>
   <main id="container">
     <ProductInfo
-      :name="productName"
-      :price="productPrice"
-      :description="productDescription"
+      :name="this.$store.state.productModule.name"
+      :price="this.$store.state.productModule.price"
+      :description="this.$store.state.productModule.description"
     />
+
     <UserDataForm />
+
+    <CheckoutPaymentMethod />
+
+    <AppFooter />
   </main>
 </template>
 
 <script>
-import { ProductInfo, UserDataForm } from "../components/organisms/index";
+import { AppFooter } from "../components/atoms";
+import {
+  CheckoutPaymentMethod,
+  ProductInfo,
+  UserDataForm,
+} from "../components/organisms/index";
 
 export default {
   name: "ProductCheckout",
-  data: () => {
-    return {
-      productName: "Nome do produto",
-      productPrice: "50,00",
-      productDescription: "Plano mensal com renovação automática",
-    };
-  },
   components: {
     ProductInfo,
     UserDataForm,
+    CheckoutPaymentMethod,
+    AppFooter,
   },
 };
 </script>
