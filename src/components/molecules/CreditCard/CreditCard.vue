@@ -1,31 +1,33 @@
 <template>
   <div class="credit-card">
-    <el-row type="flex" justify="space-between">
-      <el-col :span="4">
-        <img src="../../../assets/credit-card-stamp-icon.png" alt="" />
-      </el-col>
-      <el-col :span="6">
-        <img src="../../../assets/visa-icon.png" alt="" />
-      </el-col>
-    </el-row>
+    <div class="card-icons">
+      <div>
+        <img src="../../../assets/credit-card-stamp-icon.png" alt="visa" />
+      </div>
+      <div>
+        <img src="../../../assets/visa-icon.png" alt="visa" />
+      </div>
+    </div>
 
-    <el-row class="credit-card-number">
-      <span> {{ this.$store.state.paymentDataModule.creditCard.number }} </span>
-    </el-row>
+    <div class="credit-card-number">
+      <span>
+        {{ cardNumber !== "" ? cardNumber : "#### #### #### ####" }}
+      </span>
+    </div>
 
     <div class="credit-card-owner-data">
       <div>
         <p class="credit-card-owner-data-text">Titular</p>
         <p class="credit-card-owner-data-text uppercase">
-          {{ this.$store.state.paymentDataModule.creditCard.owner }}
+          {{ cardOwner !== "" ? cardOwner.slice(0, 30) : "Nome do titular" }}
         </p>
       </div>
 
       <div>
         <p class="credit-card-owner-data-text">Validade</p>
         <p class="credit-card-owner-data-text">
-          {{ this.$store.state.paymentDataModule.creditCard.month }}/{{
-            this.$store.state.paymentDataModule.creditCard.year
+          {{ cardMonth !== "" ? cardMonth : "MÊS" }}/{{
+            cardYear !== "" ? cardYear.toString().slice(2, 4) : "ANO"
           }}
         </p>
       </div>
@@ -100,5 +102,10 @@ export default {
 .uppercase {
   font-weight: 600;
   text-transform: uppercase;
+}
+
+.card-icons {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

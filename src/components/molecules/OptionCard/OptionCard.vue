@@ -1,7 +1,7 @@
 <template>
   <div
-    :class="`payment-option ${active && 'payment-option-active'}`"
-    @click="$emit('paymentSelected', value)"
+    :class="`option-card ${active && 'option-card-active'}`"
+    @click="$emit('optionSelected', value)"
   >
     <img :src="imgSrc" alt="label" />
     <span>{{ label }}</span>
@@ -10,13 +10,13 @@
 
 <script>
 export default {
-  name: "PaymentOption",
+  name: "OptionCard",
   props: ["imgSrc", "label", "value", "active"],
 };
 </script>
 
 <style scoped>
-.payment-option {
+.option-card {
   background-color: #fff;
   width: 100%;
   max-width: 132px;
@@ -37,7 +37,7 @@ export default {
   transition: all 0.2s;
 }
 
-.payment-option-active {
+.option-card-active {
   border-color: #ff6905;
   background-color: #e67a201a;
 }

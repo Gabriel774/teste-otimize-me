@@ -3,8 +3,7 @@
     <h2 class="form-title">Libere sua compra rapidamente pagando com o Pix!</h2>
 
     <div class="cards-container">
-      <CardCheckout
-        class=""
+      <InfoCard
         v-for="card in cards"
         :key="card.title"
         :title="card.title"
@@ -16,17 +15,15 @@
     <h3 class="resume-details">Detalhes da compra</h3>
 
     <div class="product-info-container">
-      <p class="product-name">Nome do produto</p>
-      <p class="product-value">
-        R$ {{ this.$store.state.productModule.price }} / Mês
-      </p>
+      <p class="product-name">{{ productName }}</p>
+      <p class="product-value">R$ {{ productPrice }} / Mês</p>
     </div>
 
     <TextInput
       :id="'cpf_cnpj'"
       :label="'CPF/CNPJ (Para emissão de Nota Fiscal)'"
-      :value="this.$store.state.paymentDataModule.cpf_cnpj"
-      :mask="maskCpfCnpj"
+      :value="cpf_cnpj"
+      :mask="masks['cpfCnpj']"
       @changeValue="updateCpfCnpj($event)"
       class="cpf-cnpj-input"
     />
@@ -34,27 +31,23 @@
 </template>
 
 <script>
-import { cpfCnpjMask } from "../../../../utils/filters";
-import { TextInput, CardCheckout } from "../../../molecules";
-import { months, years, installments } from "./selectOptions";
-import { pixCards } from "./cards";
+import masks from "../../../../../utils/masks";
+import { TextInput, InfoCard } from "../../../../molecules";
+import pixCards from "./cards";
+
 export default {
   name: "PixForm",
-  components: { TextInput, CardCheckout },
+  props: ["productName", "productPrice", "cpf_cnpj"],
+  components: { TextInput, InfoCard },
   data: () => {
     return {
-      mothOptions: months,
-      yearOptions: years,
-      installmentOptions: installments,
       cards: pixCards,
+      masks,
     };
   },
   methods: {
     updateCpfCnpj(event) {
       this.$store.commit("updateCpfCnpj", event.value);
-    },
-    maskCpfCnpj(value) {
-      return cpfCnpjMask(value);
     },
   },
 };
@@ -119,7 +112,7 @@ export default {
   color: #707070;
   font-size: 16px;
   font-weight: 400;
-  line-height: 24px; /* 150% */
+  line-height: 24px;
   margin: 0 auto;
   text-align: center;
 }

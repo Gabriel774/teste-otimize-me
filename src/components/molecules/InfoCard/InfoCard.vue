@@ -1,5 +1,5 @@
 <template>
-  <div class="card-checkout">
+  <div class="info-card">
     <img :src="imgSrc" alt="ícone" />
 
     <h3 class="card-title">{{ title }}</h3>
@@ -10,13 +10,13 @@
 
 <script>
 export default {
-  name: "CardCheckout",
+  name: "InfoCard",
   props: ["imgSrc", "title", "description"],
 };
 </script>
 
 <style>
-.card-checkout {
+.info-card {
   display: flex;
   flex-direction: column;
   justify-content: center;

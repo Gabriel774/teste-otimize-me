@@ -1,33 +1,31 @@
 <template>
-  <section id="product-info-container">
-    <el-row :gutter="32" id="content">
-      <el-col class="column" :span="10">
-        <img src="../../../assets/product-image.png" alt="Produto" />
-      </el-col>
+  <section class="product-info-container">
+    <div class="product-info-content">
+      <img src="../../../assets/product-image.png" alt="Produto" />
 
-      <el-col class="column" id="text-container">
+      <div class="product-info-text-container">
         <p id="title">{{ name }}</p>
         <p id="price">R$ {{ price }} / Mês</p>
         <p id="description">{{ description }}</p>
-      </el-col>
-      <el-col class="column" :span="16">
-        <SelectInput
-          :value="country"
-          :placeholder="'Alterar país'"
-          :options="countries"
-          @changeValue="updateCountry($event)"
-        />
-      </el-col>
-    </el-row>
+      </div>
 
-    <el-row id="footer">
+      <SelectInput
+        :value="country"
+        :placeholder="'Alterar país'"
+        :options="countries"
+        class="change-country-input"
+        @changeValue="updateCountry($event)"
+      />
+    </div>
+
+    <div id="footer">
       <span> contatolivrediet@gmail.com </span>
-    </el-row>
+    </div>
   </section>
 </template>
 
 <script>
-import SelectInput from "../../molecules/SelectInput/index.vue";
+import { SelectInput } from "../../molecules";
 import countries from "./countries";
 
 export default {
@@ -49,7 +47,7 @@ export default {
 </script>
 
 <style scoped>
-#product-info-container {
+.product-info-container {
   background-color: #fff;
   width: 100%;
   max-width: 680px;
@@ -58,14 +56,24 @@ export default {
   border: 1px solid #b0b0b0;
 }
 
-#content {
+.product-info-content {
   padding: 16px;
   display: flex;
+  gap: 32px;
 
   @media (max-width: 568px) {
     flex-direction: column;
     align-items: center;
     gap: 10px;
+  }
+}
+
+.change-country-input {
+  max-width: 190px;
+  margin-left: auto;
+
+  @media (max-width: 568px) {
+    margin: auto;
   }
 }
 
@@ -98,7 +106,7 @@ export default {
   font-weight: 600;
 }
 
-#text-container {
+.product-info-text-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -107,14 +115,6 @@ export default {
   @media (max-width: 568px) {
     align-items: center;
     text-align: center;
-  }
-}
-
-.column {
-  @media (max-width: 568px) {
-    align-items: center;
-    text-align: center;
-    width: fit-content;
   }
 }
 </style>

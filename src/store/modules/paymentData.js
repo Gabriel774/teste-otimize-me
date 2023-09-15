@@ -1,4 +1,4 @@
-const paymentDataModule = {
+const paymentData = {
   state: () => ({
     option: "credit-card",
     cpf_cnpj: "",
@@ -27,4 +27,4 @@ const paymentDataModule = {
   actions: {},
 };
 
-export { paymentDataModule };
+export { paymentData };

@@ -1,22 +1,34 @@
 <template>
   <section id="checkout-payment-method-container">
     <div id="payment-options-container">
-      <PaymentOption
+      <OptionCard
         v-for="option in paymentOptions"
         :key="option.value"
         :value="option.value"
         :label="option.label"
         :imgSrc="option.img"
-        :active="$store.state.paymentDataModule.option === option.value"
-        @paymentSelected="updatePaymentMethod($event)"
+        :active="paymentState.option === option.value"
+        @optionSelected="updatePaymentMethod($event)"
       />
     </div>
 
     <CreditCardForm
-      v-if="$store.state.paymentDataModule.option === 'credit-card'"
+      :paymentState="paymentState"
+      :productState="productState"
+      v-if="paymentState.option === 'credit-card'"
     />
-    <PixForm v-if="$store.state.paymentDataModule.option === 'pix'" />
-    <TicketForm v-if="$store.state.paymentDataModule.option === 'ticket'" />
+    <PixForm
+      :productName="productState.name"
+      :productPrice="productState.price"
+      :cpf_cnpj="paymentState.cpf_cnpj"
+      v-if="paymentState.option === 'pix'"
+    />
+    <TicketForm
+      :productName="productState.name"
+      :productPrice="productState.price"
+      :cpf_cnpj="paymentState.cpf_cnpj"
+      v-if="paymentState.option === 'ticket'"
+    />
 
     <el-button class="finish-purchase-button">Comprar Agora</el-button>
 
@@ -29,23 +41,23 @@
 </template>
 
 <script>
-import PaymentOption from "../../molecules/PaymentOption/index.vue";
-import CreditCardForm from "./forms/CreditCardForm.vue";
-import PixForm from "./forms/PixForm.vue";
-import TicketForm from "./forms/TicketForm.vue";
+import { OptionCard } from "../../molecules";
+import CreditCardForm from "./forms/CreditCardForm/CreditCardForm.vue";
+import PixForm from "./forms/PixForm/PixForm.vue";
+import TicketForm from "./forms/TicketForm/TicketForm.vue";
 import paymentOptions from "./paymentOptions";
 
 export default {
   name: "CheckoutPaymentMethod",
-  components: { PaymentOption, CreditCardForm, PixForm, TicketForm },
+  components: { OptionCard, CreditCardForm, PixForm, TicketForm },
   data: () => {
     return {
       paymentOptions,
     };
   },
+  props: ["paymentState", "productState"],
   methods: {
     updatePaymentMethod(value) {
-      console.log(value);
       this.$store.commit("updateOption", value);
     },
   },
@@ -87,8 +99,10 @@ export default {
   max-width: 360px;
 }
 
-.finish-purchase-button:hover {
+.finish-purchase-button:hover,
+.finish-purchase-button:focus {
   background-color: #f6a13c;
+  border-color: #f6a23c37;
   color: white;
 }
 

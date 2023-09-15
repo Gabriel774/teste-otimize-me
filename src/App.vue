@@ -1,15 +1,21 @@
 <template>
   <div id="app">
-    <ProductCheckout />
+    <ProductCheckout :state="state" />
   </div>
 </template>
 
 <script>
-import ProductCheckout from "./views/ProductCheckout.vue";
+import { ProductCheckout } from "./components/pages";
+
 export default {
   name: "App",
   components: {
     ProductCheckout,
+  },
+  computed: {
+    state() {
+      return this.$store.state;
+    },
   },
 };
 </script>

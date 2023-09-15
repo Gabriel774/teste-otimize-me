@@ -1,5 +1,5 @@
-export { default as TextInput } from "./TextInput/index.vue";
-export { default as SelectInput } from "./SelectInput/index.vue";
-export { default as PaymentOption } from "./PaymentOption/index.vue";
-export { default as CreditCard } from "./CreditCard/index.vue";
-export { default as CardCheckout } from "./CardCheckout/index.vue";
+export { default as TextInput } from "./TextInput/TextInput.vue";
+export { default as SelectInput } from "./SelectInput/SelectInput.vue";
+export { default as OptionCard } from "./OptionCard/OptionCard.vue";
+export { default as CreditCard } from "./CreditCard/CreditCard.vue";
+export { default as InfoCard } from "./InfoCard/InfoCard.vue";

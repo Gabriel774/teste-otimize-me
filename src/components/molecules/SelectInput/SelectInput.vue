@@ -1,5 +1,5 @@
 <template>
-  <div class="select-input">
+  <div :class="`select-input grid-${size}`">
     <label :for="id" class="input-label">{{ label }}</label>
     <el-select
       :id="id"
@@ -31,6 +31,7 @@ export default {
     options: Array,
     disabled: Boolean,
     marginTop: Boolean,
+    size: String,
   },
 };
 </script>
@@ -50,5 +51,17 @@ export default {
 
 .top-spacing {
   margin-top: 18px;
+}
+
+.grid-small {
+  grid-column: span 1;
+}
+
+.grid-big {
+  grid-column: span 2;
+}
+
+.grid-extra-big {
+  grid-column: span 3;
 }
 </style>

@@ -3,8 +3,7 @@
     <h2 class="form-title">Atenção:</h2>
 
     <div class="cards-container">
-      <CardCheckout
-        class=""
+      <InfoCard
         v-for="card in cards"
         :key="card.title"
         :title="card.title"
@@ -16,17 +15,15 @@
     <h3 class="resume-details">Detalhes da compra</h3>
 
     <div class="product-info-container">
-      <p class="product-name">Nome do produto</p>
-      <p class="product-value">
-        R$ {{ this.$store.state.productModule.price }} / Mês
-      </p>
+      <p class="product-name">{{ productName }}</p>
+      <p class="product-value">R$ {{ productPrice }} / Mês</p>
     </div>
 
     <TextInput
       :id="'cpf_cnpj'"
       :label="'CPF/CNPJ (Para emissão de Nota Fiscal)'"
-      :value="this.$store.state.paymentDataModule.cpf_cnpj"
-      :mask="maskCpfCnpj"
+      :value="cpf_cnpj"
+      :mask="masks['cpfCnpj']"
       @changeValue="updateCpfCnpj($event)"
       class="cpf-cnpj-input"
     />
@@ -34,28 +31,23 @@
 </template>
 
 <script>
-import { cpfCnpjMask } from "../../../../utils/filters";
-import { TextInput, CardCheckout } from "../../../molecules";
-import { months, years, installments } from "./selectOptions";
-import { ticketCards } from "./cards";
+import masks from "../../../../../utils/masks";
+import { TextInput, InfoCard } from "../../../../molecules";
+import ticketCards from "./cards";
 
 export default {
   name: "TicketForm",
-  components: { TextInput, CardCheckout },
+  components: { TextInput, InfoCard },
+  props: ["productName", "productPrice", "cpf_cnpj"],
   data: () => {
     return {
-      mothOptions: months,
-      yearOptions: years,
-      installmentOptions: installments,
       cards: ticketCards,
+      masks,
     };
   },
   methods: {
     updateCpfCnpj(event) {
       this.$store.commit("updateCpfCnpj", event.value);
-    },
-    maskCpfCnpj(value) {
-      return cpfCnpjMask(value);
     },
   },
 };

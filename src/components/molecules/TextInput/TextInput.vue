@@ -1,5 +1,5 @@
 <template>
-  <div class="text-input">
+  <div :class="`text-input grid-${size}`">
     <label :for="id" class="input-label">{{ label }}</label>
 
     <el-input
@@ -37,6 +37,7 @@ export default {
     checkboxLabel: String,
     marginTop: Boolean,
     mask: Function,
+    size: String,
   },
   methods: {
     maskValue(value) {
@@ -73,5 +74,17 @@ export default {
 
 .top-spacing {
   margin-top: 18px;
+}
+
+.grid-small {
+  grid-column: span 1;
+}
+
+.grid-big {
+  grid-column: span 2;
+}
+
+.grid-extra-big {
+  grid-column: span 3;
 }
 </style>

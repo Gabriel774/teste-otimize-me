@@ -1,3 +1,2 @@
-export { default as ProductInfo } from "./ProductInfo/index.vue";
-export { default as UserDataForm } from "./UserDataForm/index.vue";
-export { default as CheckoutPaymentMethod } from "./CheckoutPaymentMethod/index.vue";
+export { default as ProductInfo } from "./ProductInfo/ProductInfo.vue";
+export { default as GridForm } from "./GridForm/GridForm.vue";

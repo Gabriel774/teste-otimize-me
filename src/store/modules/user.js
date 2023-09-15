@@ -1,4 +1,4 @@
-const userModule = {
+const user = {
   state: () => ({
     name: "",
     email: "",
@@ -19,4 +19,4 @@ const userModule = {
   actions: {},
 };
 
-export { userModule };
+export { user };

@@ -1,4 +1,4 @@
-const productModule = {
+const product = {
   state: () => ({
     name: "Nome do produto",
     price: "50,00",
@@ -8,4 +8,4 @@ const productModule = {
   actions: {},
 };
 
-export { productModule };
+export { product };
