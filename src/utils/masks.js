@@ -1,11 +1,11 @@
 export default {
-  capitalize: function (value) {
+  capitalize(value) {
     if (!value) return "";
     value = value.toString();
     return value.charAt(0).toUpperCase() + value.slice(1);
   },
 
-  zipCode: function (value) {
+  zipCode(value) {
     if (value.length > 9) return value.slice(0, 9);
     if (!value) return "";
     value = value.replace(/\D/g, "");
@@ -13,7 +13,7 @@ export default {
     return value;
   },
 
-  phone: function (value) {
+  phone(value) {
     return value
       .replace(/\D/g, "")
       .replace(/^(\d)/, "($1")
@@ -22,18 +22,18 @@ export default {
       .replace(/(-\d{4})\d+?$/, "$1");
   },
 
-  number: function (value) {
+  number(value) {
     return value.replace(/\D/g, "");
   },
 
-  creditCard: function (value) {
+  creditCard(value) {
     let inputOnlyDigits = value.replace(/\D/g, "");
     inputOnlyDigits = inputOnlyDigits.slice(0, 16);
     let groups = inputOnlyDigits.match(/.{1,4}/g);
     return groups ? groups.join(" ") : inputOnlyDigits;
   },
 
-  cpfCnpj: function (value) {
+  cpfCnpj(value) {
     let cnpjCpf = value.replace(/\D/g, "").slice(0, 14);
 
     if (cnpjCpf.length > 11) {
@@ -50,11 +50,11 @@ export default {
     return cnpjCpf;
   },
 
-  alphabet: function (value) {
+  alphabet(value) {
     return value.replace(/[^a-zA-Z ]+/g, "");
   },
 
-  cvv: function (value) {
+  cvv(value) {
     return value.slice(0, 4);
   },
 };

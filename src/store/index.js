@@ -7,6 +7,9 @@ import actions from "./actions";
 const store = new Vuex.Store({
   state: () => ({
     initiatedCheckout: false,
+    addedToCart: false,
+    filledAddress: false,
+    addedPaymentInfo: false,
   }),
   modules: {
     paymentData,
@@ -14,8 +17,8 @@ const store = new Vuex.Store({
     user,
   },
   mutations: {
-    setInitiatedCheckout(state, payload) {
-      state.initiatedCheckout = payload;
+    setState(state, payload) {
+      state[payload.key] = payload.value;
     },
   },
   actions,

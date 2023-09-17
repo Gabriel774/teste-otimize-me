@@ -10,6 +10,7 @@ const paymentData = {
       cvv: "",
       installments: "1",
     },
+    errors: {},
   }),
   mutations: {
     updateCreditCardValue(state, payload) {
@@ -22,6 +23,12 @@ const paymentData = {
 
     updateOption(state, payload) {
       state.option = payload;
+    },
+    updatePaymentErrors(state, payload) {
+      state.errors = payload;
+    },
+    updateCpfCnpjError(state, payload) {
+      state.errors.cpf_cnpj = payload;
     },
   },
   actions: {},

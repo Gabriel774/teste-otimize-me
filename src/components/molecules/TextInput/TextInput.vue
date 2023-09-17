@@ -1,5 +1,5 @@
 <template>
-  <div :class="`text-input grid-${size}`">
+  <div :id="`${id}-input-container`" :class="`text-input grid-${size}`">
     <label :for="id" class="input-label">{{ label }}</label>
 
     <el-input
@@ -8,7 +8,6 @@
       :placeholder="placeholder"
       :value="value"
       :disabled="disabled"
-      :class="`${marginTop && 'top-spacing'}`"
       @blur="$emit('blur')"
       @focus="$emit('focus')"
       @input="$emit('changeValue', { value: maskValue($event), key: id })"
@@ -21,6 +20,9 @@
       :label="checkboxLabel"
       :itemid="`checkbox-${id}`"
     />
+    <span class="input-error-text">
+      {{ error }}
+    </span>
   </div>
 </template>
 
@@ -38,6 +40,7 @@ export default {
     marginTop: Boolean,
     mask: Function,
     size: String,
+    error: String,
   },
   methods: {
     maskValue(value) {
@@ -70,10 +73,13 @@ export default {
   flex-direction: column;
   gap: 4px;
   position: relative;
+  margin-top: auto;
+  width: 100%;
+  height: 100%;
 }
 
 .top-spacing {
-  margin-top: 18px;
+  margin-top: auto;
 }
 
 .grid-small {
@@ -86,5 +92,11 @@ export default {
 
 .grid-extra-big {
   grid-column: span 3;
+}
+
+.input-error-text {
+  color: tomato;
+  margin-left: 12px;
+  font-size: 12px;
 }
 </style>

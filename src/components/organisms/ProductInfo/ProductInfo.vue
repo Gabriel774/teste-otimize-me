@@ -5,7 +5,16 @@
 
       <div class="product-info-text-container">
         <p id="title">{{ name }}</p>
-        <p id="price">R$ {{ price }} / Mês</p>
+        <p id="price">
+          R$
+          {{
+            new Intl.NumberFormat("pt-BR", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }).format(price)
+          }}
+          {{ subscription ? "/ Mês" : "" }}
+        </p>
         <p id="description">{{ description }}</p>
       </div>
 
@@ -13,6 +22,7 @@
         :value="country"
         :placeholder="'Alterar país'"
         :options="countries"
+        :noMarginTop="true"
         class="change-country-input"
         @changeValue="updateCountry($event)"
       />
@@ -30,7 +40,7 @@ import countries from "./countries";
 
 export default {
   name: "ProductInfo",
-  props: ["name", "price", "description"],
+  props: ["name", "price", "description", "subscription"],
   components: { SelectInput },
   data: () => {
     return {

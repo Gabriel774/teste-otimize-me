@@ -4,16 +4,16 @@
       :name="state.product.name"
       :price="state.product.price"
       :description="state.product.description"
+      :subscription="state.product.subscription"
     />
 
     <UserDataForm />
 
-    <CheckoutForm
-      :paymentState="state.paymentData"
-      :productState="state.product"
-    />
+    <CheckoutForm />
 
-    <TaxText v-if="state.paymentData.option === 'credit-card'" />
+    <p v-if="state.paymentData.option === 'credit-card'" class="tax-text">
+      *OBS.: Taxa de 2.99% a.m.
+    </p>
 
     <AppFooter />
   </main>
@@ -23,7 +23,6 @@
 import { AppFooter } from "../atoms";
 import { ProductInfo } from "../organisms/index";
 import { UserDataForm, CheckoutForm } from "../templates";
-import { TaxText } from "../atoms";
 
 export default {
   name: "ProductCheckout",
@@ -32,9 +31,12 @@ export default {
     UserDataForm,
     CheckoutForm,
     AppFooter,
-    TaxText,
   },
-  props: ["state"],
+  computed: {
+    state() {
+      return this.$store.state;
+    },
+  },
 };
 </script>
 
@@ -46,5 +48,11 @@ export default {
   align-items: center;
   gap: 24px;
   padding: 16px;
+}
+
+.tax-text {
+  font-size: 12px;
+  margin: 0;
+  font-weight: 400;
 }
 </style>

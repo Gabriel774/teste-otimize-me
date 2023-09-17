@@ -55,7 +55,7 @@ export default function form(props) {
       showCheckbox: true,
       checkboxLabel: "Sem número",
       checkboxChange: props.checkboxChange,
-      disabled: props.numberDisabled,
+      disabled: props.data.numberDisabled,
     },
     {
       id: "addressComplement",

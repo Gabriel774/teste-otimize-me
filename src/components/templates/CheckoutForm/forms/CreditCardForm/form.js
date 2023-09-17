@@ -7,6 +7,7 @@ export default function form(props) {
       mask: "creditCard",
       type: "TextInput",
       size: "extra-big",
+      action: "addPaymentInfo",
     },
     {
       id: "owner",
@@ -15,6 +16,7 @@ export default function form(props) {
       mask: "alphabet",
       type: "TextInput",
       size: "extra-big",
+      action: "addPaymentInfo",
     },
     {
       id: "cpf_cnpj",
@@ -23,6 +25,9 @@ export default function form(props) {
       mask: "cpfCnpj",
       type: "TextInput",
       size: "extra-big",
+      update: props.updateCpfCnpj,
+      value: props.cpfCnpjValue,
+      action: "addPaymentInfo",
     },
     {
       id: "month",
@@ -31,6 +36,7 @@ export default function form(props) {
       type: "SelectInput",
       options: props.months,
       size: "small",
+      actionOnChange: "addPaymentInfo",
     },
     {
       id: "year",
@@ -38,14 +44,17 @@ export default function form(props) {
       type: "SelectInput",
       options: props.years,
       size: "small",
+      actionOnChange: "addPaymentInfo",
+      labelFill: true,
     },
     {
-      id: "CVV",
+      id: "cvv",
       label: "CVV",
       placeholder: "CVV",
       mask: "cvv",
       type: "TextInput",
       size: "small",
+      action: "addPaymentInfo",
     },
     {
       id: "installments",
@@ -53,6 +62,7 @@ export default function form(props) {
       placeholder: "Selecione o número de parcelas",
       type: "SelectInput",
       size: "extra-big",
+      options: props.installmentOptions(props.productPrice, props.installments),
     },
   ];
 }

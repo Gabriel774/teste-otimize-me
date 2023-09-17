@@ -7,30 +7,34 @@
         :value="option.value"
         :label="option.label"
         :imgSrc="option.img"
-        :active="paymentState.option === option.value"
+        :active="state.paymentData.option === option.value"
         @optionSelected="updatePaymentMethod($event)"
       />
     </div>
 
-    <CreditCardForm
-      :paymentState="paymentState"
-      :productState="productState"
-      v-if="paymentState.option === 'credit-card'"
-    />
+    <CreditCardForm v-if="state.paymentData.option === 'credit-card'" />
+
     <PixForm
-      :productName="productState.name"
-      :productPrice="productState.price"
-      :cpf_cnpj="paymentState.cpf_cnpj"
-      v-if="paymentState.option === 'pix'"
-    />
-    <TicketForm
-      :productName="productState.name"
-      :productPrice="productState.price"
-      :cpf_cnpj="paymentState.cpf_cnpj"
-      v-if="paymentState.option === 'ticket'"
+      :productName="state.product.name"
+      :productPrice="state.product.price"
+      :subscription="state.product.subscription"
+      :cpf_cnpj="state.paymentData.cpf_cnpj"
+      :inputError="state.paymentData.errors.cpf_cnpj"
+      v-if="state.paymentData.option === 'pix'"
     />
 
-    <el-button class="finish-purchase-button">Comprar Agora</el-button>
+    <TicketForm
+      :productName="state.product.name"
+      :productPrice="state.product.price"
+      :subscription="state.product.subscription"
+      :cpf_cnpj="state.paymentData.cpf_cnpj"
+      :inputError="state.paymentData.errors.cpf_cnpj"
+      v-if="state.paymentData.option === 'ticket'"
+    />
+
+    <el-button class="finish-purchase-button" @click="callAction('purchase')"
+      >Comprar Agora</el-button
+    >
 
     <img
       class="safe-icon"
@@ -55,11 +59,26 @@ export default {
       paymentOptions,
     };
   },
-  props: ["paymentState", "productState"],
+  computed: {
+    state() {
+      return this.$store.state;
+    },
+  },
   methods: {
     updatePaymentMethod(value) {
+      this.$store.commit("updateCpfCnpj", "");
+      this.$store.commit("updateCpfCnpjError", "");
+      this.$store.commit("updatePaymentErrors", {});
       this.$store.commit("updateOption", value);
     },
+    callAction(action) {
+      this.$store.dispatch(action);
+    },
+  },
+  created() {
+    this.$store.subscribe((mutation) => {
+      if (mutation.type === "updateCpfCnpjError") this.$forceUpdate();
+    });
   },
 };
 </script>

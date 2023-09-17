@@ -10,10 +10,15 @@ const user = {
     district: "",
     city: "",
     state: "",
+    numberDisabled: false,
+    errors: {},
   }),
   mutations: {
     updateValue(state, payload) {
       state[payload.key] = payload.value;
+    },
+    updateUserErrors(state, payload) {
+      state.errors = payload;
     },
   },
   actions: {},

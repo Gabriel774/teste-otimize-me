@@ -16,7 +16,17 @@
 
     <div class="product-info-container">
       <p class="product-name">{{ productName }}</p>
-      <p class="product-value">R$ {{ productPrice }} / Mês</p>
+      <p class="product-value">
+        R$
+        {{
+          new Intl.NumberFormat("pt-BR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }).format(productPrice)
+        }}
+
+        {{ subscription ? "/ Mês" : "" }}
+      </p>
     </div>
 
     <TextInput
@@ -24,8 +34,11 @@
       :label="'CPF/CNPJ (Para emissão de Nota Fiscal)'"
       :value="cpf_cnpj"
       :mask="masks['cpfCnpj']"
-      @changeValue="updateCpfCnpj($event)"
+      :error="inputError"
       class="cpf-cnpj-input"
+      @changeValue="updateCpfCnpj($event)"
+      @blur="callAction('addPaymentInfo')"
+      @focus="callAction('initiateCheckout')"
     />
   </div>
 </template>
@@ -37,7 +50,13 @@ import pixCards from "./cards";
 
 export default {
   name: "PixForm",
-  props: ["productName", "productPrice", "cpf_cnpj"],
+  props: [
+    "productName",
+    "productPrice",
+    "cpf_cnpj",
+    "subscription",
+    "inputError",
+  ],
   components: { TextInput, InfoCard },
   data: () => {
     return {
@@ -48,6 +67,9 @@ export default {
   methods: {
     updateCpfCnpj(event) {
       this.$store.commit("updateCpfCnpj", event.value);
+    },
+    callAction(action) {
+      this.$store.dispatch(action);
     },
   },
 };

@@ -2,10 +2,16 @@
   <div class="credit-card">
     <div class="card-icons">
       <div>
-        <img src="../../../assets/credit-card-stamp-icon.png" alt="visa" />
+        <img src="../../../assets/credit-card-stamp-icon.png" alt="bandeira" />
       </div>
-      <div>
-        <img src="../../../assets/visa-icon.png" alt="visa" />
+
+      <div class="flag-container">
+        <img
+          v-if="cardFlag"
+          :class="`flag-icon ${cardFlag.big ? 'flag-big' : ''}`"
+          :src="cardFlag.icon"
+          :alt="cardFlag.alt"
+        />
       </div>
     </div>
 
@@ -36,9 +42,15 @@
 </template>
 
 <script>
+import creditCardFlag from "../../../utils/creditCardFlag";
 export default {
   name: "CreditCard",
   props: ["cardNumber", "cardOwner", "cardYear", "cardMonth"],
+  computed: {
+    cardFlag() {
+      return creditCardFlag(this.cardNumber.replace(/ /g, ""));
+    },
+  },
 };
 </script>
 
@@ -56,6 +68,10 @@ export default {
   z-index: 0;
   font-family: "Source Code Pro";
   margin-top: 16px;
+
+  @media (max-width: 390px) {
+    transform: scale(0.8);
+  }
 }
 
 .credit-card::before {
@@ -107,5 +123,24 @@ export default {
 .card-icons {
   display: flex;
   justify-content: space-between;
+}
+
+.flag-container {
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 7px;
+  border-radius: 7px;
+  height: 46px;
+  min-width: 55px;
+}
+
+.flag-icon {
+  height: 20px;
+}
+
+.flag-big {
+  height: 40px;
 }
 </style>

@@ -1,6 +1,11 @@
 <template>
   <section id="user-data-form">
-    <GridForm :stateValues="state" :inputs="inputs" />
+    <GridForm
+      :stateValues="state"
+      :inputs="inputs"
+      :updateValue="updateValue"
+      :gridResize="true"
+    />
   </section>
 </template>
 
@@ -10,6 +15,7 @@ import masks from "../../../utils/masks";
 import states from "./states";
 import ViaCepService from "../../../services/ViaCepService";
 import form from "./form";
+import { mapState } from "vuex";
 
 export default {
   name: "UserDataForm",
@@ -25,16 +31,16 @@ export default {
     inputs() {
       return form({
         disabledFields: this.disabledFields,
-        numberDisabled: this.numberDisabled,
         data: this.state,
+        states: this.states,
         checkboxChange: this.updateCheckbox,
         isFieldDisabled: this.isFieldDisabled,
         getAddressData: this.getAddressData,
       });
     },
-    state() {
-      return this.$store.state.user;
-    },
+    ...mapState({
+      state: (state) => state.user,
+    }),
   },
   components: { GridForm },
   methods: {
@@ -77,9 +83,13 @@ export default {
     isFieldDisabled(fieldName) {
       return this.disabledFields.includes(fieldName);
     },
+    updateValue(value) {
+      this.$store.commit("updateValue", value);
+    },
     updateCheckbox(value) {
       this.$store.commit("updateValue", { key: "addressNumber", value: "" });
-      this.numberDisabled = value;
+      this.$store.commit("updateValue", { key: "numberDisabled", value });
+      this.$store.dispatch("fillAddress");
     },
   },
 };

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <ProductCheckout :state="state" />
+    <ProductCheckout />
   </div>
 </template>
 
@@ -12,10 +12,15 @@ export default {
   components: {
     ProductCheckout,
   },
-  computed: {
-    state() {
-      return this.$store.state;
-    },
+  created() {
+    document.body.addEventListener("mouseleave", function () {
+      console.log("ChangeWindow");
+    });
+    window.addEventListener("beforeunload", function (e) {
+      console.log("CloseWindow");
+      e.preventDefault();
+      e.returnValue = "";
+    });
   },
 };
 </script>

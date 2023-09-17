@@ -4,8 +4,11 @@
       <div class="credit-card-form">
         <GridForm
           :gridBig="true"
+          :gapSmall="true"
           :inputs="inputs"
-          :stateValues="productState"
+          :stateValues="paymentState.creditCard"
+          :errors="paymentState.errors"
+          :updateValue="updateValue"
         />
       </div>
 
@@ -23,7 +26,18 @@
 
     <div class="product-info-container">
       <p class="product-name">Nome do produto</p>
-      <p class="product-value">R$ {{ productState.price }} / Mês</p>
+
+      <p class="product-value">
+        R$
+        {{
+          new Intl.NumberFormat("pt-BR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }).format(productState.price)
+        }}
+
+        {{ productState.subscription ? "/ Mês" : "" }}
+      </p>
     </div>
 
     <div class="charge-info">
@@ -31,6 +45,7 @@
         src="../../../../../assets/credit-card-edit-icon.png"
         alt="Cartão de crédito"
       />
+
       <p class="charge-label">
         Essa cobrança aparecerá na sua fatura como: PAYT*NomeDoProduto
       </p>
@@ -52,7 +67,6 @@ export default {
     return {
       mothOptions: months,
       yearOptions: years,
-      installmentOptions: installments,
       masks,
     };
   },
@@ -61,14 +75,26 @@ export default {
       return form({
         months,
         years,
-        installments,
+        installmentOptions: installments,
+        updateCpfCnpj: this.updateCpfCnpj,
+        cpfCnpjValue: this.paymentState.cpf_cnpj,
+        productPrice: this.productState.price,
+        installments: this.productState.installments,
       });
     },
+    paymentState() {
+      return this.$store.state.paymentData;
+    },
+    productState() {
+      return this.$store.state.product;
+    },
   },
-  props: ["productState", "paymentState"],
   methods: {
     updateCpfCnpj(event) {
       this.$store.commit("updateCpfCnpj", event.value);
+    },
+    updateValue(event) {
+      this.$store.commit("updateCreditCardValue", event);
     },
   },
 };
@@ -79,7 +105,7 @@ export default {
   display: flex;
   gap: 32px;
 
-  @media (max-width: 685px) {
+  @media (max-width: 700px) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -95,7 +121,7 @@ export default {
   font-size: 14px;
   font-weight: 400;
   margin-top: 10px;
-  line-height: 21px; /* 150% */
+  line-height: 21px;
 }
 
 .product-info-container {

@@ -1,11 +1,19 @@
 <template>
-  <section :class="`grid-form ${gridBig ? 'grid-big' : ''}`">
+  <section
+    :class="`
+    grid-form
+    ${gridResize ? 'grid-resize' : ''}
+    ${gridBig ? 'grid-big' : ''}
+    ${gapSmall ? 'gap-small' : ''}
+    `"
+  >
     <component
       v-for="input in inputs"
       :id="input.id"
       :label="input.label"
       :placeholder="input.placeholder"
-      :value="stateValues[input.id]"
+      :value="input.value ? input.value : stateValues[input.id]"
+      :error="errors ? errors[input.id] : stateValues.errors[input.id]"
       :key="input.id"
       :size="input.size"
       :is="input.type"
@@ -13,10 +21,16 @@
       :showCheckbox="input.showCheckbox"
       :checkboxLabel="input.checkboxLabel"
       :disabled="input.disabled"
+      :labelFill="input.labelFill"
       :options="input.options"
       @focus="callAction('initiateCheckout')"
       @checkboxChange="input.checkboxChange($event)"
-      @changeValue="updateValue($event)"
+      @changeValue="
+        [
+          input.update ? input.update($event) : updateValue($event),
+          input.actionOnChange && callAction(input.actionOnChange),
+        ]
+      "
       @blur="
         [input.action && callAction(input.action), input.blur && input.blur()]
       "
@@ -35,15 +49,30 @@ export default {
       masks,
     };
   },
+  created() {
+    this.$store.subscribe((mutation) => {
+      if (
+        mutation.type === "updateUserErrors" ||
+        mutation.type === "updateCpfCnpjError" ||
+        mutation.type === "updatePaymentErrors"
+      )
+        this.$forceUpdate();
+    });
+  },
   methods: {
     callAction(action) {
       this.$store.dispatch(action);
     },
-    updateValue(event) {
-      this.$store.commit("updateValue", { ...event });
-    },
   },
-  props: ["inputs", "stateValues", "gridBig"],
+  props: [
+    "inputs",
+    "stateValues",
+    "gridBig",
+    "updateValue",
+    "gapSmall",
+    "gridResize",
+    "errors",
+  ],
   components: { TextInput, SelectInput },
 };
 </script>
@@ -57,7 +86,9 @@ export default {
   gap: 24px 32px;
   justify-content: center;
   align-items: center;
+}
 
+.grid-resize {
   @media (max-width: 568px) {
     display: flex;
     flex-direction: column;
@@ -66,5 +97,9 @@ export default {
 
 .grid-big {
   grid-template-columns: 1fr 1fr 1fr;
+}
+
+.gap-small {
+  gap: 12px;
 }
 </style>

@@ -16,16 +16,29 @@
 
     <div class="product-info-container">
       <p class="product-name">{{ productName }}</p>
-      <p class="product-value">R$ {{ productPrice }} / Mês</p>
+      <p class="product-value">
+        R$
+        {{
+          new Intl.NumberFormat("pt-BR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }).format(productPrice)
+        }}
+
+        {{ subscription ? "/ Mês" : "" }}
+      </p>
     </div>
 
     <TextInput
       :id="'cpf_cnpj'"
       :label="'CPF/CNPJ (Para emissão de Nota Fiscal)'"
+      :error="inputError"
       :value="cpf_cnpj"
       :mask="masks['cpfCnpj']"
-      @changeValue="updateCpfCnpj($event)"
       class="cpf-cnpj-input"
+      @changeValue="updateCpfCnpj($event)"
+      @blur="callAction('addPaymentInfo')"
+      @focus="callAction('initiateCheckout')"
     />
   </div>
 </template>
@@ -38,7 +51,13 @@ import ticketCards from "./cards";
 export default {
   name: "TicketForm",
   components: { TextInput, InfoCard },
-  props: ["productName", "productPrice", "cpf_cnpj"],
+  props: [
+    "productName",
+    "productPrice",
+    "cpf_cnpj",
+    "subscription",
+    "inputError",
+  ],
   data: () => {
     return {
       cards: ticketCards,
@@ -48,6 +67,9 @@ export default {
   methods: {
     updateCpfCnpj(event) {
       this.$store.commit("updateCpfCnpj", event.value);
+    },
+    callAction(action) {
+      this.$store.dispatch(action);
     },
   },
 };
