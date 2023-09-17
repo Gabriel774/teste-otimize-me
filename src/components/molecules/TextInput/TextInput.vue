@@ -20,6 +20,7 @@
       :label="checkboxLabel"
       :itemid="`checkbox-${id}`"
     />
+    
     <span class="input-error-text">
       {{ error }}
     </span>

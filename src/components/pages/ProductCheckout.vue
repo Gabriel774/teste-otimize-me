@@ -5,13 +5,19 @@
       :price="state.product.price"
       :description="state.product.description"
       :subscription="state.product.subscription"
+      :imgSrc="state.product.imgSrc"
     />
 
     <UserDataForm />
 
     <CheckoutForm />
 
-    <p v-if="state.paymentData.option === 'credit-card'" class="tax-text">
+    <p
+      v-if="
+        state.paymentData.option === 'credit-card' && state.product.subscription
+      "
+      class="tax-text"
+    >
       *OBS.: Taxa de 2.99% a.m.
     </p>
 
@@ -20,6 +26,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { AppFooter } from "../atoms";
 import { ProductInfo } from "../organisms/index";
 import { UserDataForm, CheckoutForm } from "../templates";
@@ -33,9 +40,9 @@ export default {
     AppFooter,
   },
   computed: {
-    state() {
-      return this.$store.state;
-    },
+    ...mapState({
+      state: (state) => state,
+    }),
   },
 };
 </script>

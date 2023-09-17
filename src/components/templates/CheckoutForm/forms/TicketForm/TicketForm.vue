@@ -16,6 +16,7 @@
 
     <div class="product-info-container">
       <p class="product-name">{{ productName }}</p>
+      
       <p class="product-value">
         R$
         {{

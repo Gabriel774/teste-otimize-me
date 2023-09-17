@@ -4,6 +4,7 @@
     @click="$emit('optionSelected', value)"
   >
     <img :src="imgSrc" alt="label" />
+    
     <span>{{ label }}</span>
   </div>
 </template>

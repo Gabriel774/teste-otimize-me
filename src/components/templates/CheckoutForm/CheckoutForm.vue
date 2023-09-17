@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { OptionCard } from "../../molecules";
 import CreditCardForm from "./forms/CreditCardForm/CreditCardForm.vue";
 import PixForm from "./forms/PixForm/PixForm.vue";
@@ -60,9 +61,9 @@ export default {
     };
   },
   computed: {
-    state() {
-      return this.$store.state;
-    },
+    ...mapState({
+      state: (state) => state,
+    }),
   },
   methods: {
     updatePaymentMethod(value) {

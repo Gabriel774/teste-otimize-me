@@ -17,6 +17,7 @@
       @change="$emit('changeValue', { value: $event, key: id })"
     >
       <el-option :label="placeholder" :disabled="true" :value="''" />
+      
       <el-option
         v-for="option in options"
         :key="option.value ? option.value : option"
@@ -24,6 +25,7 @@
         :value="option.value ? option.value : option"
       />
     </el-select>
+    
     <span class="input-error-text">
       {{ error }}
     </span>

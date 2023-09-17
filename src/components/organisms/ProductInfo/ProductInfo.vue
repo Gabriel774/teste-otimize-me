@@ -1,10 +1,11 @@
 <template>
   <section class="product-info-container">
     <div class="product-info-content">
-      <img src="../../../assets/product-image.png" alt="Produto" />
+      <img :src="imgSrc" alt="Produto" />
 
       <div class="product-info-text-container">
         <p id="title">{{ name }}</p>
+
         <p id="price">
           R$
           {{
@@ -15,6 +16,7 @@
           }}
           {{ subscription ? "/ Mês" : "" }}
         </p>
+
         <p id="description">{{ description }}</p>
       </div>
 
@@ -40,7 +42,7 @@ import countries from "./countries";
 
 export default {
   name: "ProductInfo",
-  props: ["name", "price", "description", "subscription"],
+  props: ["name", "price", "description", "subscription", "imgSrc"],
   components: { SelectInput },
   data: () => {
     return {
@@ -71,7 +73,7 @@ export default {
   display: flex;
   gap: 32px;
 
-  @media (max-width: 568px) {
+  @media (max-width: 610px) {
     flex-direction: column;
     align-items: center;
     gap: 10px;
@@ -82,7 +84,7 @@ export default {
   max-width: 190px;
   margin-left: auto;
 
-  @media (max-width: 568px) {
+  @media (max-width: 610px) {
     margin: auto;
   }
 }
@@ -114,6 +116,11 @@ export default {
   padding: 16px 8px;
   font-size: 12px;
   font-weight: 600;
+
+  @media (max-width: 610px) {
+    align-items: center;
+    text-align: center;
+  }
 }
 
 .product-info-text-container {
@@ -122,7 +129,7 @@ export default {
   justify-content: center;
   gap: 8px;
 
-  @media (max-width: 568px) {
+  @media (max-width: 610px) {
     align-items: center;
     text-align: center;
   }

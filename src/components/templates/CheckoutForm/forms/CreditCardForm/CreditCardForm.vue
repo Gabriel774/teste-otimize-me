@@ -59,6 +59,7 @@ import { CreditCard } from "../../../../molecules";
 import { months, years, installments } from "./selectOptions";
 import { GridForm } from "../../../../organisms";
 import form from "./form";
+import { mapState } from "vuex";
 
 export default {
   name: "CreditCardForm",
@@ -82,12 +83,10 @@ export default {
         installments: this.productState.installments,
       });
     },
-    paymentState() {
-      return this.$store.state.paymentData;
-    },
-    productState() {
-      return this.$store.state.product;
-    },
+    ...mapState({
+      paymentState: (state) => state.paymentData,
+      productState: (state) => state.product,
+    }),
   },
   methods: {
     updateCpfCnpj(event) {
